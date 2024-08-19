@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import useData from "./useData";
 
+const buttonStyles = 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+
 function App() {
     const {recentSearch} = useData();
     return (
@@ -13,7 +15,7 @@ function App() {
             </div>
             <div>
                 <h2>Recent Search</h2>
-                {recentSearch.map(item=> <button>{item}</button>)}
+                {recentSearch.map(item=> <button className={buttonStyles}>{item}</button>)}
             </div>
         </div>
     );
