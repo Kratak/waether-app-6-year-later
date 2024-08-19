@@ -1,19 +1,23 @@
 import {useEffect, useState} from "react";
 import {debounce} from "lodash";
+import {CityDataProps} from "./App";
 
 const useData = () => {
-    const [recentSearch, setRecentSearch] = useState([''])
+    const [recentSearch, setRecentSearch] = useState(Array<CityDataProps>)
     const [ inputValue, setInputValue] = useState('')
 
 
     const getRecentSearch = () => {
-        // get from local storage
-        setRecentSearch(["Warszawa"]);
+        const prevRecentSearch = JSON.parse(String(localStorage.getItem('recentSearch')))
+        setRecentSearch(prevRecentSearch)
     }
 
-    const saverRecentSearch = (data: {}) => {
-        console.log('saverRecentSearch', data)
-        //save to local storage
+    const saverRecentSearch = (data: CityDataProps) => {
+        const prevRecentSearch = JSON.parse(String(localStorage.getItem('recentSearch')))
+        const filteredPrevRecentSearch = [...prevRecentSearch].filter(item => item.name !== data.name).slice(0,4)
+        const newRecentSearch = [...filteredPrevRecentSearch, data]
+        setRecentSearch(newRecentSearch)
+        localStorage.setItem('recentSearch', JSON.stringify(newRecentSearch))
     }
 
     const getDataCityData = () => {
@@ -22,23 +26,17 @@ const useData = () => {
     }
     const handleSetInputValue = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value)
-    },500)
+    },300)
 
     useEffect(() => {
         getRecentSearch()
     }, []);
 
-    useEffect(() => {
-        if(inputValue.length > 3){
-            console.log('search')
-        }
-    }, [inputValue]);
-
     return {
         recentSearch,
         inputValue,
         handleSetInputValue,
-        saverRecentSearch
+        saverRecentSearch,
     }
 }
 
