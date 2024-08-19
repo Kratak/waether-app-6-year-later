@@ -1,25 +1,18 @@
 import {useEffect, useState} from "react";
-import {useQuery} from "@tanstack/react-query";
-import axios from "axios";
 import {debounce} from "lodash";
 
 const useData = () => {
     const [recentSearch, setRecentSearch] = useState([''])
     const [ inputValue, setInputValue] = useState('')
-    const {isLoading, error, data, isFetching} = useQuery({
-        queryKey: ['repoData'],
-        queryFn: () =>
-            axios
-                .get('https://api.github.com/repos/tannerlinsley/react-query')
-                .then((res) => res.data),
-    })
+
 
     const getRecentSearch = () => {
         // get from local storage
         setRecentSearch(["Warszawa"]);
     }
 
-    const saverRecentSearch = () => {
+    const saverRecentSearch = (data: {}) => {
+        console.log('saverRecentSearch', data)
         //save to local storage
     }
 
@@ -44,7 +37,8 @@ const useData = () => {
     return {
         recentSearch,
         inputValue,
-        handleSetInputValue
+        handleSetInputValue,
+        saverRecentSearch
     }
 }
 
