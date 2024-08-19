@@ -12,6 +12,11 @@ const useData = () => {
         //save to local storage
     }
 
+    const getDataCityData = () => {
+        //http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
+        //http://api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid={API key}
+    }
+
     useEffect(() => {
         getRecentSearch()
     }, []);
