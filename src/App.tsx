@@ -1,26 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import useData from "./useData";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const {recentSearch} = useData();
+    return (
+        <div>
+            <h1>Weather app</h1>
+            <div>
+                <p>Search for your city</p>
+                <input type="text"/>
+            </div>
+            <div>
+                <h2>Recent Search</h2>
+                {recentSearch.map(item=> <button>{item}</button>)}
+            </div>
+        </div>
+    );
 }
 
 export default App;
