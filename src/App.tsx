@@ -1,25 +1,11 @@
 import React from 'react';
 import './App.css';
 import useData from "./useData";
-import {useQuery} from "@tanstack/react-query";
-import axios from "axios";
+
 
 
 function App() {
-    const {recentSearch} = useData();
-
-    const {isLoading, error, data, isFetching} = useQuery({
-        queryKey: ['repoData'],
-        queryFn: () =>
-            axios
-                .get('https://api.github.com/repos/tannerlinsley/react-query')
-                .then((res) => res.data),
-    })
-
-    if (isLoading) return <div>'Loading...'</div>
-
-    if (error) return <div>'An error has occurred: ' + error.message</div>
-    console.log(data)
+    const {recentSearch, handleSetInputValue} = useData();
 
     return (
         <div className="flex flex-col items-center">
@@ -27,7 +13,7 @@ function App() {
                 <h1 className="font-bold mb-2">Weather app</h1>
                 <div className="mb-6">
                     <p className="pb-2 text-center">Search for your city</p>
-                    <input type="text"/>
+                    <input type="search" onChange={handleSetInputValue}/>
                 </div>
                 <div className="pt-6 pb-6">
                     data
