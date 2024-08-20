@@ -2,12 +2,32 @@ import React from 'react';
 import './App.css';
 import useData from "./useData";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {Radar} from "react-chartjs-2";
+import {
+    Chart as ChartJS,
+    RadialLinearScale,
+    PointElement,
+    LineElement,
+    Filler,
+    Tooltip,
+    Legend,
+} from 'chart.js';
 
 export interface CityDataProps {
     name: string;
     lon: number;
     lat: number
 }
+
+ChartJS.register(
+    RadialLinearScale,
+    PointElement,
+    LineElement,
+    Filler,
+    Tooltip,
+    Legend
+);
+
 
 export interface WeatherDataProps {
     "coord": {
@@ -34,15 +54,15 @@ export interface WeatherDataProps {
         "grnd_level": number;
     };
     rain: {
-       "1h": number;
-       "3h": number;
+        "1h": number;
+        "3h": number;
     };
     snow: {
-       "1h": number;
-       "3h": number;
+        "1h": number;
+        "3h": number;
     };
     cloud: {
-      all: number;
+        all: number;
     };
     "visibility": number;
     "wind": {
@@ -118,7 +138,7 @@ function App() {
 
     return (
         <div className="flex flex-col items-center">
-            <div className="flex flex-col items-center bg-gray-100 p-12 rounded">
+            <div className="flex flex-col items-center bg-gray-100 p-6 rounded">
                 <h1 className="font-bold mb-2">Weather app</h1>
                 <div className="mb-6">
                     <p className="pb-2 text-center">Search for your city</p>
@@ -139,7 +159,18 @@ function App() {
                     <p>Maximal temperature: {weatherData.main.temp_max}C</p>
                     <p>Atmospheric pressure: {weatherData.main.grnd_level}hPa</p>
                     <p>Humidity: {weatherData.main.humidity}%</p>
-                    <p>Humidity: {weatherData.main.humidity}%</p>
+                    <Radar width={600} data={{
+                        labels: ['Feels like temperature', 'Temperature', 'Minimal temperature', 'Maximal temperature'],
+                        datasets: [
+                            {
+                                label: 'Temperatures',
+                                data: [weatherData.main.feels_like, weatherData.main.temp, weatherData.main.temp_min, weatherData.main.temp_max],
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1,
+                            },
+                        ],
+                    }}/>
                 </div>}
                 <div className="flex flex-col items-center">
                     <h2 className="pb-2">Recent Search</h2>
